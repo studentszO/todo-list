@@ -10,23 +10,49 @@ export function renderNav() {
 
     const ulOfProjects = document.querySelector(".projects-list");
 
-    taskFactory.projectList.forEach((e) => {
-        const projectList = document.createElement("li");
-        const projectLink = document.createElement("a");
-        projectLink.setAttribute("href", "#");
-        projectList.appendChild(projectLink);
-        projectLink.textContent = e.name;
-        ulOfProjects.appendChild(projectList);
+    taskFactory.categoryList.forEach((e) => {
+        const categoryName = document.createElement("li");
+        categoryName.textContent = e.name;
+        // console.log("____________")
+        // console.log(e)
+        // console.log(e.categoryProjects)
+        const categoryListOfProjects = document.createElement("ul");
 
-        e.projectTasks.forEach((task) => {
-            const taskList = document.createElement("li");
-            const taskLink = document.createElement("a");
-            taskList.appendChild(taskLink);
-            taskLink.setAttribute("href", "#");
-            taskLink.textContent = task.name;
-            projectList.appendChild(taskList);
+
+
+
+        e.categoryProjects.forEach((project) => {
+            const projectName = document.createElement("li");
+            const projectLink = document.createElement("a");
+            projectName.appendChild(projectLink);
+            projectLink.setAttribute("href", "#");
+            projectLink.textContent = project.name;
+            console.log(project)
+            console.log("PROJECT UPPERR")
+            categoryListOfProjects.appendChild(projectName);
         });
+
+        ulOfProjects.append(categoryName, categoryListOfProjects);
+
     });
+    
+    // taskFactory.projectList.forEach((e) => {
+    //     const projectList = document.createElement("li");
+    //     const projectLink = document.createElement("a");
+    //     projectLink.setAttribute("href", "#");
+    //     projectList.appendChild(projectLink);
+    //     projectLink.textContent = e.name;
+    //     ulOfProjects.appendChild(projectList);
+
+    //     e.projectTasks.forEach((task) => {
+    //         const taskList = document.createElement("li");
+    //         const taskLink = document.createElement("a");
+    //         taskList.appendChild(taskLink);
+    //         taskLink.setAttribute("href", "#");
+    //         taskLink.textContent = task.name;
+    //         projectList.appendChild(taskList);
+    //     });
+    // });
 };
 
 export function renderMain() {
@@ -58,12 +84,12 @@ export function renderMain() {
             taskDueDate.textContent = task.dueDate;
             taskPriority.textContent = task.priority;
 
-            linkOnH3.setAttribute("href", "#")
+            linkOnH3.setAttribute("href", "#");
 
             taskName.appendChild(linkOnH3);
-            taskCard.append(taskName, taskDesc, taskPriority, taskDueDate)
+            taskCard.append(taskName, taskDesc, taskPriority, taskDueDate);
             tasksContainer.append(taskCard);
-        })
+        });
 
 
     };

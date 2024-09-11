@@ -12,11 +12,24 @@ export const taskFactory = (function () {
         const id = projectId;
         projectId++;
         projectList.push({ name, projectTasks, id })
+        assignProjectToCategory({ name, projectTasks, id }, defaultCategory)
         return { name, projectTasks, id };
     }
 
+    function newCategory(name) {
+        const categoryProjects = [];
+        const id = categoryId;
+        categoryId++;
+        categoryList.push({ name, categoryProjects, id });
+        return { name, categoryProjects, id }
+    }
+
     function assignTaskToProject(task, project) {
-        return project.projectTasks.push(task)
+        return project.projectTasks.push(task);
+    }
+
+    function assignProjectToCategory(project, category) {
+        return category.categoryProjects.push(project);
     }
 
     function deleteTask(taskId) {
@@ -25,9 +38,12 @@ export const taskFactory = (function () {
 
     let projectId = 0;
     let taskId = 0;
+    let categoryId = 0;
 
+    const categoryList = [];
     const projectList = [];
+    const defaultCategory = newCategory("My First Category");
     const defaultProject = newProject("default");
 
-    return { newTask, newProject, assignTaskToProject, deleteTask, projectList }
+    return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList }
 })();

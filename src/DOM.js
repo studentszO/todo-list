@@ -1,34 +1,26 @@
 import { taskFactory } from "./tasks";
 
+const renderOnClick = (link) => {
+    link.addEventListener("click", (e) => {
+      renderMain().renderProject(link.getAttribute("data-id"))
+    });
+};
+
 export function renderNav() {
 
-    // const onClick = () => {
-    //     addEventListener("click", (e) => {
-    //      if project e.RenderMainProject, etc..
-    //     })
-    // }
 
     const ulOfProjects = document.querySelector(".projects-list");
 
     taskFactory.categoryList.forEach((e) => {
         const categoryName = document.createElement("li");
         categoryName.textContent = e.name;
-        // console.log("____________")
-        // console.log(e)
-        // console.log(e.categoryProjects)
         const categoryListOfProjects = document.createElement("ul");
-
-
-
 
         e.categoryProjects.forEach((project) => {
             const projectName = document.createElement("li");
-            const projectLink = document.createElement("a");
-            projectName.appendChild(projectLink);
-            projectLink.setAttribute("href", "#");
-            projectLink.textContent = project.name;
-            console.log(project)
-            console.log("PROJECT UPPERR")
+            renderOnClick(projectName);
+            projectName.setAttribute("data-id", project.id);
+            projectName.textContent = project.name;
             categoryListOfProjects.appendChild(projectName);
         });
 
@@ -36,23 +28,6 @@ export function renderNav() {
 
     });
     
-    // taskFactory.projectList.forEach((e) => {
-    //     const projectList = document.createElement("li");
-    //     const projectLink = document.createElement("a");
-    //     projectLink.setAttribute("href", "#");
-    //     projectList.appendChild(projectLink);
-    //     projectLink.textContent = e.name;
-    //     ulOfProjects.appendChild(projectList);
-
-    //     e.projectTasks.forEach((task) => {
-    //         const taskList = document.createElement("li");
-    //         const taskLink = document.createElement("a");
-    //         taskList.appendChild(taskLink);
-    //         taskLink.setAttribute("href", "#");
-    //         taskLink.textContent = task.name;
-    //         projectList.appendChild(taskList);
-    //     });
-    // });
 };
 
 export function renderMain() {
@@ -63,6 +38,7 @@ export function renderMain() {
     };
 
     const renderProject = (projectId) => {
+        mainContainer.textContent = "";
         const listOfProjects = taskFactory.projectList;
         const title = document.createElement("h2");
         const tasksContainer = document.createElement("div");

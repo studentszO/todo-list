@@ -8,7 +8,6 @@ const renderOnClick = (link) => {
 
 export function renderNav() {
 
-
     const ulOfProjects = document.querySelector(".projects-list");
 
     taskFactory.categoryList.forEach((e) => {
@@ -33,8 +32,48 @@ export function renderNav() {
 export function renderMain() {
     
     const mainContainer = document.querySelector(".main");
-    const renderDefault = () => {
+    const renderSettings = () => {
 
+        const title = document.createElement("h2");
+        title.textContent = "TO-DO LIST SETTINGS";
+
+        const categoriesContainer = document.createElement("div");
+        const categoryTitle = document.createElement("h3");
+        categoryTitle.textContent = "Categories";
+        const addCategory = document.createElement("button");
+        addCategory.textContent = "ADD A NEW CATEGORY";
+        const setCategoryName = document.createElement("button");
+        setCategoryName.textContent = "CHANGE A CATEGORY'S NAME";
+        categoriesContainer.append(categoryTitle, addCategory, setCategoryName);
+        
+        const projectsContainer = document.createElement("div");
+        const projectsTitle = document.createElement("h3");
+        projectsTitle.textContent = "Projects";
+        const addProject = document.createElement("button");
+        addProject.textContent = "ADD A NEW PROJECT";
+        const setProjectName = document.createElement("button");
+        setProjectName.textContent = "CHANGE A PROJECT'S NAME";
+        projectsContainer.append(projectsTitle, addProject, setProjectName);
+    
+    
+        const tasksContainer = document.createElement("div");
+        const tasksTitle = document.createElement("h3");
+        tasksTitle.textContent = "Tasks";
+        const addToDoTask = document.createElement("button");
+        addToDoTask.textContent = "ADD A NEW TASK";
+        const setTaskName = document.createElement("button");
+        setTaskName.textContent = "SET A NEW NAME FOR AN EXISTING TASK";
+        const setTaskDueDate = document.createElement("button");
+        setTaskDueDate.textContent = "SET A NEW DUE DATE FOR AN EXISTING TASK";
+        // const setTaskProject = document.createElement("button");
+        // setTaskProject.textContent = "set THE TASK'S PROJECT"
+        const setTaskPriority = document.createElement("button");
+        setTaskPriority.textContent = "SET A NEW PRIORITY FOR AN EXISTING TASK";
+        // const setTaskToCompleted = document.createElement("button");
+
+        tasksContainer.append(tasksTitle, addToDoTask, setTaskName, setTaskPriority, setTaskDueDate);
+    
+        mainContainer.append(title, categoriesContainer, projectsContainer, tasksContainer)
     };
 
     const renderProject = (projectId) => {
@@ -76,5 +115,5 @@ export function renderMain() {
         // const description = document.createElement("div");
     };
 
-    return { renderDefault, renderProject, renderTask }
+    return { renderSettings, renderProject, renderTask }
 }

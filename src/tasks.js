@@ -3,6 +3,7 @@ export const taskFactory = (function () {
     function newTask(name, desc, dueDate, priority) {
         const taskCompleted = false;
         const id = taskId;
+        taskId++;
         assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, defaultProject);
         return { name, desc, dueDate, priority, taskCompleted, id };
     }

@@ -37,6 +37,8 @@ export function renderMain() {
         const title = document.createElement("h2");
         title.textContent = "TO-DO LIST SETTINGS";
 
+        const settingsContainer = document.createElement("div")
+
         const categoriesContainer = document.createElement("div");
         const categoryTitle = document.createElement("h3");
         categoryTitle.textContent = "Categories";
@@ -72,8 +74,8 @@ export function renderMain() {
         // const setTaskToCompleted = document.createElement("button");
 
         tasksContainer.append(tasksTitle, addToDoTask, setTaskName, setTaskPriority, setTaskDueDate);
-    
-        mainContainer.append(title, categoriesContainer, projectsContainer, tasksContainer)
+        settingsContainer.append(categoriesContainer, projectsContainer, tasksContainer)
+        mainContainer.append(title, settingsContainer)
     };
 
     const renderProject = (projectId) => {
@@ -93,18 +95,56 @@ export function renderMain() {
             const taskDesc = document.createElement("p");
             const taskPriority = document.createElement("div");
             const taskDueDate = document.createElement("div");
+            const editTaskButton = document.createElement("button");
+            const removeTaskButton = document.createElement("button");
+            
+            taskCard.classList.add("card");
+            taskPriority.classList.add("p"+task.priority);
+            editTaskButton.classList.add("edit-task");
+            removeTaskButton.classList.add("remove-task");
 
             linkOnH3.textContent = task.name;
             taskDesc.textContent = task.desc;
             taskDueDate.textContent = task.dueDate;
-            taskPriority.textContent = task.priority;
-
-            linkOnH3.setAttribute("href", "#");
+            taskPriority.textContent = handlePriorityText(task.priority);
+            editTaskButton.textContent = "EDIT TASK";
+            removeTaskButton.textContent = "REMOVE TASK";
 
             taskName.appendChild(linkOnH3);
-            taskCard.append(taskName, taskDesc, taskPriority, taskDueDate);
+            taskCard.append(taskName, taskDueDate, taskDesc, taskPriority, taskDueDate, editTaskButton, removeTaskButton);
             tasksContainer.append(taskCard);
+
+            taskCard.addEventListener("click", () => {
+                taskCard.style.height === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
+            });
         });
+
+        function handlePriorityText(priorityLevel) {
+            console.log(priorityLevel);
+            switch (priorityLevel) {
+                case "1":
+                    return "URGENT";
+                case "2":
+                    return "HIGH";
+                case "3":
+                    return "MEDIUM";
+                case "4":
+                    return "LOW";
+            }
+        }
+
+        // projectTasks.forEach((task) => {
+        //     const taskCard = document.createElement("div");
+        //     taskCard.classList.add("card");
+        //     const taskName = document.createElement("h3");
+        //     const taskDueDate = document.createElement("div");
+
+        //     taskDueDate.textContent = task.dueDate;
+        //     taskName.textContent = task.name;
+
+        //     taskCard.append(taskName, taskDueDate);
+        //     tasksContainer.append(taskCard);
+        // });
 
 
     };

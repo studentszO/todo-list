@@ -1,9 +1,13 @@
 :root {
     --avatar-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     --avatar-border: 2px rgb(230, 230, 230) solid;
-    --clr-main: rgb(160, 87, 255);
+    --clr-main: rgb(135, 44, 253);
     --clr-sub: rgb(66, 66, 66);
+    --clr-submain: rgb(255, 219, 253);
+    --clr-navbar: #f3F3F3;
+    font-family: sans-serif;
 }
+
 * {
     padding: 0;
     margin: 0;
@@ -13,7 +17,6 @@
 }
 
 html {
-    display: flex;
     margin: 5%;
     background-color: #3a3a3a;
 }
@@ -23,7 +26,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     border: #3b3b3b00 8px solid;
     border-radius: 15px;
-    width: 1400px;
+    width: min(1400px);
     height: 960px;
     display: grid;
     grid-auto-flow: column;
@@ -32,6 +35,7 @@ body {
 
 .main {
     background-color: var(--clr-sub);
+    padding: 15px;
     z-index: 0;
     border-radius: 0 15px 15px 0;
 }
@@ -41,5 +45,35 @@ body {
     border-radius: 15px 0 0 15px;
     box-shadow: rgba(14, 30, 37, 0.12) 5px 0px 20px 0px;
     z-index: 1;
-    padding: 10px;
+    padding: 15px;
+}
+
+h1 {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: var(--clr-navbar) 1px solid;
+    color: var(--clr-navbar);
+}
+
+.projects-list > li {
+    background: linear-gradient(to right, rgba(66, 66, 66, 0.596), rgba(0, 0, 0, 0));
+    width: 80%;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 5px 0px 5px 20px;
+    font-weight: 900;
+    color: var(--clr-submain);
+    text-transform: uppercase;
+}
+
+.projects-list > li + ul > li {
+    color: var(--clr-navbar);
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding-left: 45px;
+}
+
+.projects-list > li + ul {
+
+    margin-bottom: 20px;
 }

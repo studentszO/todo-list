@@ -145,8 +145,21 @@ h1 {
     width: fit-content;
     height: fit-content;
     align-self: center;
-    padding: 2px 5px;
+    font-weight: 600;
+    font-size: .75rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    color: var(--clr-main);
+    border: 1px solid var(--clr-sub);
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 3px 7px;
     grid-area: 3 / 1 / 4 / 2;
+    &:hover {
+        background-color: var(--clr-main);
+        color: var(--clr-sub);
+        border-color: var(--clr-main);
+    }
 }
 
 .remove-task {

@@ -103,6 +103,8 @@ export function renderMain() {
             editTaskButton.classList.add("edit-task");
             removeTaskButton.classList.add("remove-task");
 
+            taskCard.id = "card" + task.id;
+
             linkOnH3.textContent = task.name;
             taskDesc.textContent = task.desc;
             taskDueDate.textContent = task.dueDate;
@@ -117,10 +119,14 @@ export function renderMain() {
             taskCard.addEventListener("click", () => {
                 taskCard.style.height === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
             });
+
+            removeTaskButton.addEventListener("click", () => {
+                taskFactory.deleteTask(task.id);
+                document.querySelector("#card" + task.id).remove();
+            })
         });
 
         function handlePriorityText(priorityLevel) {
-            console.log(priorityLevel);
             switch (priorityLevel) {
                 case "1":
                     return "URGENT";

@@ -1,10 +1,9 @@
 import { taskFactory } from "./tasks";
 
 const renderOnClick = (link) => {
-    link.addEventListener("click", (e) => {
+    link.onclick = function() {
       renderMain().renderProject(link.getAttribute("data-id"));
-      getAddNewTaskModalValues();
-    });
+    };
 };
 
 export function renderNav() {
@@ -119,9 +118,10 @@ export function renderMain() {
                 taskCard.append(taskName, taskDueDate, taskDesc, taskPriority, taskDueDate, editTaskButton, removeTaskButton);
                 tasksContainer.append(taskCard);
 
-                taskCard.addEventListener("click", () => {
-                    taskCard.style.height === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
-                });
+                taskCard.onclick = function() {
+                    const currentHeight = window.getComputedStyle(taskCard).height;
+                    currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
+                };
 
                 removeTaskButton.addEventListener("click", () => {
                     taskFactory.deleteTask(task.id);
@@ -154,6 +154,31 @@ export function renderMain() {
             divContainer.id = "add-new-task-btn";
             divContainer.setAttribute("data-project-id", projectId);
             tasksContainer.appendChild(divContainer);
+            openCloseModal(divContainer);
+        };
+
+        function openCloseModal(container) {
+            const newTaskModal = document.querySelector("#add-new-task");
+            const cancelButton = document.querySelector("#add-task-cancel-btn");
+
+            container.addEventListener("click", () => {
+                newTaskModal.showModal();
+            });
+            
+            window.addEventListener("click", (e) => {
+                if (e.target === newTaskModal)
+                    newTaskModal.close();
+            });
+
+            cancelButton.addEventListener("click", () => {
+                newTaskModal.close();
+            });
+        };
+
+        const confirmButton = document.querySelector("#add-task-confirm-btn");
+        confirmButton.onclick = function(){
+            getAddNewTaskModalValues();
+            renderEverything();
         };
 
         renderEverything();
@@ -162,39 +187,17 @@ export function renderMain() {
     return { renderSettings, renderProject }
 }
 
-export function getAddNewTaskModalValues() {
-    const newTaskModal = document.querySelector("#add-new-task");
+function getAddNewTaskModalValues() {
     const addNewTaskButton = document.querySelector("#add-new-task-btn");
+    const form = document.querySelector("#add-new-task-form");
 
     const projectIdValue = addNewTaskButton.getAttribute("data-project-id");
-    
     const taskNameInput = document.querySelector("#task-name");
     const taskDescInput = document.querySelector("#task-desc");
     const taskDueDateInput = document.querySelector("#task-due-date");
     const taskPriority = document.querySelector("#task-priority");
-    
-    const confirmButton = document.querySelector("#add-task-confirm-btn");
-    const cancelButton = document.querySelector("#add-task-cancel-btn");
-    
-    console.log(confirmButton)
-    
-    addNewTaskButton.addEventListener("click", () => {
-        console.log(addNewTaskButton.getAttribute("data-project-id"))
-        newTaskModal.showModal();
-    });
 
-    window.addEventListener("click", (e) => {
-        if (e.target === newTaskModal)
-            newTaskModal.close();
-    });
-    
-    cancelButton.addEventListener("click", () => {
-        newTaskModal.close();
-    });
-
-    confirmButton.addEventListener("click", (e) => {
-        taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
-
-    });
-
+    taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
+    form.reset();
+    renderMain().renderProject(projectIdValue);
 }

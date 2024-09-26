@@ -1,10 +1,10 @@
 export const taskFactory = (function () {
 
-    function newTask(name, desc, dueDate, priority) {
+    function newTask(name, desc, dueDate, priority, projectId) {
         const taskCompleted = false;
         const id = taskId;
         taskId++;
-        assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, defaultProject);
+        assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, projectList[projectId] || defaultProject);
         return { name, desc, dueDate, priority, taskCompleted, id };
     }
 
@@ -44,7 +44,7 @@ export const taskFactory = (function () {
     const categoryList = [];
     const projectList = [];
     const defaultCategory = newCategory("My First Category");
-    const defaultProject = newProject("default");
+    const defaultProject = newProject("My First project");
 
     return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList }
 })();

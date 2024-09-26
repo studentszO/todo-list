@@ -2,7 +2,8 @@ import { taskFactory } from "./tasks";
 
 const renderOnClick = (link) => {
     link.addEventListener("click", (e) => {
-      renderMain().renderProject(link.getAttribute("data-id"))
+      renderMain().renderProject(link.getAttribute("data-id"));
+      getAddNewTaskModalValues();
     });
 };
 
@@ -147,20 +148,49 @@ export function renderMain() {
             }
         }
 
-        const renderNewTaskButton = (function () {
+        function renderNewTaskButton() {
             const divContainer = document.createElement("button");
             divContainer.textContent = "ADD A NEW TASK";
+            divContainer.id = "add-new-task-btn";
+            divContainer.setAttribute("data-project-id", projectId);
             tasksContainer.appendChild(divContainer);
-
-            divContainer.addEventListener("click", () => {
-                taskFactory.newTask("ZogZogZZZ", "ZogZorZog? ZogZog ZzZzZ Zog Zog Zog... ZOG ZOG!", "02-02-24", "2");
-                console.log(taskFactory)
-                renderEverything();
-            })
-        });
+        };
 
         renderEverything();
     };
 
-    return { renderSettings, renderProject, renderTask }
+    return { renderSettings, renderProject }
+}
+
+export function getAddNewTaskModalValues() {
+    const newTaskModal = document.querySelector("#add-new-task");
+    const addNewTaskButton = document.querySelector("#add-new-task-btn");
+
+    const projectIdValue = addNewTaskButton.getAttribute("data-project-id");
+    
+    const taskNameInput = document.querySelector("#task-name");
+    const taskDescInput = document.querySelector("#task-desc");
+    const taskDueDateInput = document.querySelector("#task-due-date");
+    const taskPriority = document.querySelector("#task-priority");
+    
+    const confirmButton = document.querySelector("#add-task-confirm-btn");
+    const cancelButton = document.querySelector("#add-task-cancel-btn");
+    
+    console.log(confirmButton)
+    
+    addNewTaskButton.addEventListener("click", () => {
+        console.log(addNewTaskButton.getAttribute("data-project-id"))
+        newTaskModal.showModal();
+    });
+
+    window.addEventListener("click", (e) => {
+        if (e.target === newTaskModal)
+            newTaskModal.close();
+    });
+
+    confirmButton.addEventListener("click", (e) => {
+        taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
+
+    });
+
 }

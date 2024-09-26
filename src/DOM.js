@@ -88,43 +88,51 @@ export function renderMain() {
         title.textContent = listOfProjects[projectId].name;
         mainContainer.append(title, tasksContainer);
 
-        projectTasks.forEach((task) => {
-            const taskCard = document.createElement("div");
-            const taskName = document.createElement("h3");
-            const linkOnH3 = document.createElement("a");
-            const taskDesc = document.createElement("p");
-            const taskPriority = document.createElement("div");
-            const taskDueDate = document.createElement("div");
-            const editTaskButton = document.createElement("button");
-            const removeTaskButton = document.createElement("button");
-            
-            taskCard.classList.add("card");
-            taskPriority.classList.add("p"+task.priority);
-            editTaskButton.classList.add("edit-task");
-            removeTaskButton.classList.add("remove-task");
+        function renderTasks() {
+            tasksContainer.textContent = "";
+            projectTasks.forEach((task) => {
+                const taskCard = document.createElement("div");
+                const taskName = document.createElement("h3");
+                const linkOnH3 = document.createElement("a");
+                const taskDesc = document.createElement("p");
+                const taskPriority = document.createElement("div");
+                const taskDueDate = document.createElement("div");
+                const editTaskButton = document.createElement("button");
+                const removeTaskButton = document.createElement("button");
+                
+                taskCard.classList.add("card");
+                taskPriority.classList.add("p"+task.priority);
+                editTaskButton.classList.add("edit-task");
+                removeTaskButton.classList.add("remove-task");
 
-            taskCard.id = "card" + task.id;
+                taskCard.id = "card" + task.id;
 
-            linkOnH3.textContent = task.name;
-            taskDesc.textContent = task.desc;
-            taskDueDate.textContent = task.dueDate;
-            taskPriority.textContent = handlePriorityText(task.priority);
-            editTaskButton.textContent = "EDIT TASK";
-            removeTaskButton.textContent = "REMOVE TASK";
+                linkOnH3.textContent = task.name;
+                taskDesc.textContent = task.desc;
+                taskDueDate.textContent = task.dueDate;
+                taskPriority.textContent = handlePriorityText(task.priority);
+                editTaskButton.textContent = "EDIT TASK";
+                removeTaskButton.textContent = "REMOVE TASK";
 
-            taskName.appendChild(linkOnH3);
-            taskCard.append(taskName, taskDueDate, taskDesc, taskPriority, taskDueDate, editTaskButton, removeTaskButton);
-            tasksContainer.append(taskCard);
+                taskName.appendChild(linkOnH3);
+                taskCard.append(taskName, taskDueDate, taskDesc, taskPriority, taskDueDate, editTaskButton, removeTaskButton);
+                tasksContainer.append(taskCard);
 
-            taskCard.addEventListener("click", () => {
-                taskCard.style.height === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
+                taskCard.addEventListener("click", () => {
+                    taskCard.style.height === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
+                });
+
+                removeTaskButton.addEventListener("click", () => {
+                    taskFactory.deleteTask(task.id);
+                    document.querySelector("#card" + task.id).remove();
+                });
             });
+        };
 
-            removeTaskButton.addEventListener("click", () => {
-                taskFactory.deleteTask(task.id);
-                document.querySelector("#card" + task.id).remove();
-            })
-        });
+        function renderEverything() {
+            renderTasks();
+            renderNewTaskButton();
+        };
 
         function handlePriorityText(priorityLevel) {
             switch (priorityLevel) {
@@ -139,26 +147,19 @@ export function renderMain() {
             }
         }
 
-        // projectTasks.forEach((task) => {
-        //     const taskCard = document.createElement("div");
-        //     taskCard.classList.add("card");
-        //     const taskName = document.createElement("h3");
-        //     const taskDueDate = document.createElement("div");
+        const renderNewTaskButton = (function () {
+            const divContainer = document.createElement("button");
+            divContainer.textContent = "ADD A NEW TASK";
+            tasksContainer.appendChild(divContainer);
 
-        //     taskDueDate.textContent = task.dueDate;
-        //     taskName.textContent = task.name;
+            divContainer.addEventListener("click", () => {
+                taskFactory.newTask("ZogZogZZZ", "ZogZorZog? ZogZog ZzZzZ Zog Zog Zog... ZOG ZOG!", "02-02-24", "2");
+                console.log(taskFactory)
+                renderEverything();
+            })
+        });
 
-        //     taskCard.append(taskName, taskDueDate);
-        //     tasksContainer.append(taskCard);
-        // });
-
-
-    };
-
-    const renderTask = () => {
-        // const dueDate = document.createElement("div");
-        // const priority = document.createElement("div");
-        // const description = document.createElement("div");
+        renderEverything();
     };
 
     return { renderSettings, renderProject, renderTask }

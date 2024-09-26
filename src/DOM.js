@@ -187,6 +187,10 @@ export function getAddNewTaskModalValues() {
         if (e.target === newTaskModal)
             newTaskModal.close();
     });
+    
+    cancelButton.addEventListener("click", () => {
+        newTaskModal.close();
+    });
 
     confirmButton.addEventListener("click", (e) => {
         taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);

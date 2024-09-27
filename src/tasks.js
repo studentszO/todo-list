@@ -34,7 +34,7 @@ export const taskFactory = (function () {
         return category.categoryProjects.push(project);
     }
 
-    function deleteTask(taskId) {
+    function removeTask(taskId) {
         projectList.forEach((project) => project.projectTasks.forEach((task, index) => task.id === taskId ? project.projectTasks.splice(index, 1): false))
     }
 
@@ -43,8 +43,13 @@ export const taskFactory = (function () {
     }
 
     function removeCategory(categoryId) {
-        const index = categoryList.findIndex(category => category.id === categoryId);
+        const index = categoryList.findIndex(category => category.id === Number(categoryId));
         categoryList.splice(index, 1);
+    }
+
+    function removeProject(projectId) {
+        const index = projectList.findIndex(project => project.id === Number(projectId));
+        projectList.splice(index, 1);
     }
 
     let projectId = 0;
@@ -56,5 +61,5 @@ export const taskFactory = (function () {
     const defaultCategory = newCategory("My First Category");
     const defaultProject = newProject("My First project");
 
-    return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList, editTask, removeCategory }
+    return { newTask, newProject, assignTaskToProject, removeTask, projectList, newCategory, categoryList, editTask, removeCategory, removeProject }
 })();

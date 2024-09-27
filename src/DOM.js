@@ -117,7 +117,7 @@ export function renderMain() {
                 openCloseModal(editTaskButton, document.querySelector("#edit-task"), task.id);
 
                 removeTaskButton.onclick = function () {
-                    taskFactory.deleteTask(task.id);
+                    taskFactory.removeTask(task.id);
                     document.querySelector("#card" + task.id).remove();
                 };
             });

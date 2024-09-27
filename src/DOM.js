@@ -46,7 +46,6 @@ export function renderMain() {
             projectTasks.forEach((task) => {
                 const taskCard = document.createElement("div");
                 const taskName = document.createElement("h3");
-                const linkOnH3 = document.createElement("a");
                 const taskDesc = document.createElement("p");
                 const taskPriority = document.createElement("div");
                 const taskDueDate = document.createElement("div");
@@ -60,14 +59,13 @@ export function renderMain() {
 
                 taskCard.id = "card" + task.id;
 
-                linkOnH3.textContent = task.name;
+                taskName.textContent = task.name;
                 taskDesc.textContent = task.desc;
                 taskDueDate.textContent = task.dueDate;
                 taskPriority.textContent = handlePriorityText(task.priority);
                 editTaskButton.textContent = "EDIT TASK";
                 removeTaskButton.textContent = "REMOVE TASK";
 
-                taskName.appendChild(linkOnH3);
                 taskCard.append(taskName, taskDueDate, taskDesc, taskPriority, taskDueDate, editTaskButton, removeTaskButton);
                 tasksContainer.append(taskCard);
 
@@ -76,9 +74,7 @@ export function renderMain() {
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
 
-
-                openCloseModal(editTaskButton, document.querySelector("#edit-task"), task.id)
-
+                openCloseModal(editTaskButton, document.querySelector("#edit-task"), task.id);
 
                 removeTaskButton.onclick = function () {
                     taskFactory.deleteTask(task.id);
@@ -103,7 +99,7 @@ export function renderMain() {
                 case "4":
                     return "LOW";
             }
-        }
+        };
 
         function renderNewTaskButton() {
             const divContainer = document.createElement("button");
@@ -125,7 +121,7 @@ export function renderMain() {
     };
 
     return { renderProject }
-}
+};
 
 function getAddNewTaskModalValues() {
     const addNewTaskButton = document.querySelector("#add-new-task-btn");
@@ -140,7 +136,7 @@ function getAddNewTaskModalValues() {
     taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
     form.reset();
     renderMain().renderProject(projectIdValue);
-}
+};
 
 function EditTaskModalValues(taskId) {
 
@@ -162,7 +158,6 @@ function EditTaskModalValues(taskId) {
     taskPriority.value = arrayOfTasks[taskIndex].priority;
 
     const confirmButton = document.querySelector("#edit-task-confirm-btn");
-    const cancelButton = document.querySelector("#edit-task-cancel-btn");
 
     confirmButton.onclick = function() {
         arrayOfTasks[taskIndex].name = taskNameInput.value;
@@ -171,8 +166,8 @@ function EditTaskModalValues(taskId) {
         arrayOfTasks[taskIndex].priority = taskPriority.value;
         renderMain().renderProject(projectIdValue);
         EditTaskModal.close();
-    }
-}
+    };
+};
 
 function openCloseModal(triggerButton, modalElement, taskIdToShowValuesToEdit) {
     const cancelButton = modalElement.querySelector(".cancel-btn");

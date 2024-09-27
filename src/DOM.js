@@ -1,6 +1,5 @@
 import { taskFactory } from "./tasks";
 import deleteIconSVG from "./icons/delete-circle.svg";
-import editIconSVG from "./icons/pencil-circle.svg";
 
 const renderOnClick = (link) => {
     link.onclick = function() {
@@ -73,10 +72,13 @@ export function renderMain() {
         mainContainer.textContent = "";
         const listOfProjects = taskFactory.projectList;
         const title = document.createElement("h2");
+        const deleteIcon = document.createElement("img");
+        deleteIcon.src = deleteIconSVG;
         const tasksContainer = document.createElement("div");
         const projectTasks = listOfProjects[projectId].projectTasks;
 
         title.textContent = listOfProjects[projectId].name;
+        title.append(deleteIcon);
         mainContainer.append(title, tasksContainer);
 
         function renderTasks() {
@@ -171,7 +173,6 @@ function getAddNewTaskModalValues() {
     const taskDueDateInput = document.querySelector("#task-due-date");
     const taskPriority = document.querySelector("#task-priority");
 
-    console.log(projectIdValue + "< THIS IS THE VALUE PROJECTIDVALUE")
     taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
     form.reset();
     renderMain().renderProject(projectIdValue);

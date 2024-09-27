@@ -1,9 +1,9 @@
 :root {
     --shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     --border: 2px rgb(230, 230, 230) solid;
-    --clr-main: rgb(147, 94, 233);
+    --clr-main: rgba(255, 95, 103, 0.842);
     --clr-sub: rgb(66, 66, 66);
-    --clr-submain: rgb(255, 219, 253);
+    --clr-submain: rgb(255, 241, 219);
     --clr-navbar: #f3F3F3;
     font-family: sans-serif;
 }
@@ -220,4 +220,10 @@ h1 {
 
 .card > h3 {
     color: var(--clr-submain)
+}
+
+dialog {
+    z-index: 1;
+    position: absolute;
+    margin: auto;
 }

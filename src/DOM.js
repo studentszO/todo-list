@@ -160,10 +160,11 @@ function EditTaskModalValues(taskId) {
     const confirmButton = document.querySelector("#edit-task-confirm-btn");
 
     confirmButton.onclick = function() {
-        arrayOfTasks[taskIndex].name = taskNameInput.value;
-        arrayOfTasks[taskIndex].desc = taskDescInput.value;
-        arrayOfTasks[taskIndex].dueDate = taskDueDateInput.value;
-        arrayOfTasks[taskIndex].priority = taskPriority.value;
+        taskFactory.editTask(taskId, taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value)
+        // arrayOfTasks[taskIndex].name = taskNameInput.value;
+        // arrayOfTasks[taskIndex].desc = taskDescInput.value;
+        // arrayOfTasks[taskIndex].dueDate = taskDueDateInput.value;
+        // arrayOfTasks[taskIndex].priority = taskPriority.value;
         renderMain().renderProject(projectIdValue);
         EditTaskModal.close();
     };

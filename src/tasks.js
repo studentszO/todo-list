@@ -37,6 +37,10 @@ export const taskFactory = (function () {
         projectList.forEach((project) => project.projectTasks.forEach((task, index) => task.id === taskId ? project.projectTasks.splice(index, 1): false))
     }
 
+    function editTask(taskId, taskName, taskDesc, taskDueDate, taskPriority) {
+        projectList.forEach((project) => project.projectTasks.forEach((task, index) => task.id === taskId ? (task.name = taskName) && (task.desc = taskDesc) && (task.dueDate = taskDueDate) && (task.priority = taskPriority) : false))
+    }
+
     let projectId = 0;
     let taskId = 0;
     let categoryId = 0;
@@ -46,5 +50,5 @@ export const taskFactory = (function () {
     const defaultCategory = newCategory("My First Category");
     const defaultProject = newProject("My First project");
 
-    return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList }
+    return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList, editTask }
 })();

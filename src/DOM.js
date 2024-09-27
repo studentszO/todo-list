@@ -123,11 +123,9 @@ export function renderMain() {
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
 
-                editTaskButton.onclick = function() {
-                    const editModal = document.querySelector("#edit-task");
-                    editModal.showModal();
-                    EditTaskModalValues(task.id);
-                };
+
+                openCloseModal(editTaskButton, document.querySelector("#edit-task"), task.id)
+
 
                 removeTaskButton.onclick = function () {
                     taskFactory.deleteTask(task.id);
@@ -160,26 +158,9 @@ export function renderMain() {
             divContainer.id = "add-new-task-btn";
             divContainer.setAttribute("data-project-id", projectId);
             tasksContainer.appendChild(divContainer);
-            openCloseModal(divContainer);
+            openCloseModal(divContainer, document.querySelector("#add-new-task"))
         };
 
-        function openCloseModal(container) {
-            const newTaskModal = document.querySelector("#add-new-task");
-            const cancelButton = document.querySelector("#add-task-cancel-btn");
-
-            container.addEventListener("click", () => {
-                newTaskModal.showModal();
-            });
-            
-            window.addEventListener("click", (e) => {
-                if (e.target === newTaskModal)
-                    newTaskModal.close();
-            });
-
-            cancelButton.addEventListener("click", () => {
-                newTaskModal.close();
-            });
-        };
 
         const confirmButton = document.querySelector("#add-task-confirm-btn");
         confirmButton.onclick = function(){
@@ -238,13 +219,26 @@ function EditTaskModalValues(taskId) {
         renderMain().renderProject(projectIdValue);
         EditTaskModal.close();
     }
-
-    cancelButton.onclick = function() {
-        EditTaskModal.close();
-    }
-
-    window.addEventListener("click", (e) => {
-        if (e.target === EditTaskModal)
-            EditTaskModal.close();
-    });
 }
+
+function openCloseModal(triggerButton, modalElement, taskIdToShowValuesToEdit) {
+    const cancelButton = modalElement.querySelector(".cancel-btn");
+    console.log(cancelButton);
+    console.log(modalElement)
+    console.log(taskIdToShowValuesToEdit)
+    console.log(triggerButton)
+
+    triggerButton.onclick = () => {
+        modalElement.showModal();
+        taskIdToShowValuesToEdit === undefined ? false : EditTaskModalValues(taskIdToShowValuesToEdit);
+    };
+    
+    window.addEventListener("click", (e) => {
+        if (e.target === modalElement)
+            modalElement.close();
+    });
+
+    cancelButton.onclick = () => {
+        modalElement.close();
+    };
+};

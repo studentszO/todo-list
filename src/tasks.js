@@ -4,16 +4,17 @@ export const taskFactory = (function () {
         const taskCompleted = false;
         const id = taskId;
         taskId++;
-        assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, projectList[projectId] || defaultProject);
+        assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, 
+                            projectList[projectList.findIndex(project => project.id === Number(projectId))] || defaultProject);
         return { name, desc, dueDate, priority, taskCompleted, id };
     }
 
-    function newProject(name) {
+    function newProject(name, categoryId) {
         const projectTasks = [];
         const id = projectId;
         projectId++;
         projectList.push({ name, projectTasks, id })
-        assignProjectToCategory({ name, projectTasks, id }, defaultCategory)
+        assignProjectToCategory({ name, projectTasks, id }, categoryList[categoryList.findIndex(category => category.id === Number(categoryId))] || defaultCategory);
         return { name, projectTasks, id };
     }
 
@@ -41,6 +42,11 @@ export const taskFactory = (function () {
         projectList.forEach((project) => project.projectTasks.forEach((task, index) => task.id === taskId ? (task.name = taskName) && (task.desc = taskDesc) && (task.dueDate = taskDueDate) && (task.priority = taskPriority) : false))
     }
 
+    function removeCategory(categoryId) {
+        const index = categoryList.findIndex(category => category.id === categoryId);
+        categoryList.splice(index, 1);
+    }
+
     let projectId = 0;
     let taskId = 0;
     let categoryId = 0;
@@ -50,5 +56,5 @@ export const taskFactory = (function () {
     const defaultCategory = newCategory("My First Category");
     const defaultProject = newProject("My First project");
 
-    return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList, editTask }
+    return { newTask, newProject, assignTaskToProject, deleteTask, projectList, newCategory, categoryList, editTask, removeCategory }
 })();

@@ -123,10 +123,16 @@ export function renderMain() {
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
 
-                removeTaskButton.addEventListener("click", () => {
+                editTaskButton.onclick = function() {
+                    const editModal = document.querySelector("#edit-task");
+                    editModal.showModal();
+                    EditTaskModalValues(task.id);
+                };
+
+                removeTaskButton.onclick = function () {
                     taskFactory.deleteTask(task.id);
                     document.querySelector("#card" + task.id).remove();
-                });
+                };
             });
         };
 
@@ -200,4 +206,45 @@ function getAddNewTaskModalValues() {
     taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
     form.reset();
     renderMain().renderProject(projectIdValue);
+}
+
+function EditTaskModalValues(taskId) {
+
+    const addNewTaskButton = document.querySelector("#add-new-task-btn");
+    const projectIdValue = addNewTaskButton.getAttribute("data-project-id");
+    const EditTaskModal = document.querySelector("#edit-task");
+
+    const taskNameInput = document.querySelector("#edit-task-name");
+    const taskDescInput = document.querySelector("#edit-task-desc");
+    const taskDueDateInput = document.querySelector("#edit-task-due-date");
+    const taskPriority = document.querySelector("#edit-task-priority");
+    
+    const arrayOfTasks = taskFactory.projectList[projectIdValue].projectTasks;
+    const taskIndex = arrayOfTasks.findIndex(task => task.id === taskId);
+
+    taskNameInput.value = arrayOfTasks[taskIndex].name;
+    taskDescInput.value = arrayOfTasks[taskIndex].desc;
+    taskDueDateInput.value = arrayOfTasks[taskIndex].dueDate;
+    taskPriority.value = arrayOfTasks[taskIndex].priority;
+
+    const confirmButton = document.querySelector("#edit-task-confirm-btn");
+    const cancelButton = document.querySelector("#edit-task-cancel-btn");
+
+    confirmButton.onclick = function() {
+        arrayOfTasks[taskIndex].name = taskNameInput.value;
+        arrayOfTasks[taskIndex].desc = taskDescInput.value;
+        arrayOfTasks[taskIndex].dueDate = taskDueDateInput.value;
+        arrayOfTasks[taskIndex].priority = taskPriority.value;
+        renderMain().renderProject(projectIdValue);
+        EditTaskModal.close();
+    }
+
+    cancelButton.onclick = function() {
+        EditTaskModal.close();
+    }
+
+    window.addEventListener("click", (e) => {
+        if (e.target === EditTaskModal)
+            EditTaskModal.close();
+    });
 }

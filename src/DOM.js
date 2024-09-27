@@ -1,4 +1,6 @@
 import { taskFactory } from "./tasks";
+import deleteIconSVG from "./icons/delete-circle.svg";
+import editIconSVG from "./icons/pencil-circle.svg";
 
 const renderOnClick = (link) => {
     link.onclick = function() {
@@ -9,10 +11,20 @@ const renderOnClick = (link) => {
 export function renderNav() {
 
     const ulOfProjects = document.querySelector(".projects-list");
+    ulOfProjects.textContent = "";
 
     taskFactory.categoryList.forEach((e) => {
         const categoryName = document.createElement("li");
         categoryName.textContent = e.name;
+        const deleteIcon = document.createElement("img");
+        deleteIcon.src = deleteIconSVG;
+
+        deleteIcon.onclick = function() {
+            taskFactory.removeCategory(e.id);
+            renderNav();
+        };
+
+        categoryName.append(deleteIcon);
         const categoryListOfProjects = document.createElement("ul");
 
         e.categoryProjects.forEach((project) => {
@@ -22,9 +34,35 @@ export function renderNav() {
             projectName.textContent = project.name;
             categoryListOfProjects.appendChild(projectName);
         });
-
+        addNewProject(categoryListOfProjects, e.id)
         ulOfProjects.append(categoryName, categoryListOfProjects);
     });
+
+    const addNewCategoryInput = document.createElement("input");
+    addNewCategoryInput.setAttribute("placeholder", "Add a new category");
+    const addNewCategoryInputConfirmButton = document.createElement("div");
+    addNewCategoryInputConfirmButton.textContent = "+";
+    ulOfProjects.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
+    addNewCategoryInputConfirmButton.onclick = function() {
+        if (addNewCategoryInput.value.length > 0){
+            taskFactory.newCategory(addNewCategoryInput.value);
+            renderNav();
+        };
+    };
+
+    function addNewProject(projectList, categoryId) { 
+        const addNewProjectInput = document.createElement("input");
+        addNewProjectInput.setAttribute("placeholder", "Add a new project");
+        const addNewProjectInputConfirmButton = document.createElement("div");
+        addNewProjectInputConfirmButton.textContent = "+";
+        projectList.append(addNewProjectInput, addNewProjectInputConfirmButton);
+        addNewProjectInputConfirmButton.onclick = function() {
+            if (addNewProjectInput.value.length > 0){
+                taskFactory.newProject(addNewProjectInput.value, categoryId);
+                renderNav();
+            };
+        };
+    }
 };
 
 export function renderMain() {
@@ -133,6 +171,7 @@ function getAddNewTaskModalValues() {
     const taskDueDateInput = document.querySelector("#task-due-date");
     const taskPriority = document.querySelector("#task-priority");
 
+    console.log(projectIdValue + "< THIS IS THE VALUE PROJECTIDVALUE")
     taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
     form.reset();
     renderMain().renderProject(projectIdValue);
@@ -161,10 +200,6 @@ function EditTaskModalValues(taskId) {
 
     confirmButton.onclick = function() {
         taskFactory.editTask(taskId, taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value)
-        // arrayOfTasks[taskIndex].name = taskNameInput.value;
-        // arrayOfTasks[taskIndex].desc = taskDescInput.value;
-        // arrayOfTasks[taskIndex].dueDate = taskDueDateInput.value;
-        // arrayOfTasks[taskIndex].priority = taskPriority.value;
         renderMain().renderProject(projectIdValue);
         EditTaskModal.close();
     };

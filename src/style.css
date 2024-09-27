@@ -3,7 +3,7 @@
     --border: 2px rgb(230, 230, 230) solid;
     --clr-main: rgba(255, 95, 103, 0.842);
     --clr-sub: rgb(66, 66, 66);
-    --clr-submain: rgb(255, 241, 219);
+    --clr-submain: #fff1db;
     --clr-navbar: #f3F3F3;
     font-family: sans-serif;
 }
@@ -64,6 +64,13 @@ h1 {
     font-weight: 900;
     color: var(--clr-submain);
     text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+}
+
+.projects-list > li > img {
+    width: 22px;
+    display: flex;
 }
 
 .projects-list > li + ul > li {
@@ -91,13 +98,21 @@ h1 {
 }
 
 .main > h2 {
-    text-align: center;
+    /* text-align: center; */
     font-size: 2.4rem;
     color: var(--clr-submain);
     text-shadow: var(--shadow);
     text-transform: capitalize;
     margin-bottom: 3rem;
     border-top: 0;
+    display: flex;
+    justify-content: center;
+    padding: 5px 20px;
+}
+.main > h2 > img {
+    width: 30px;
+    margin-left: auto;
+    cursor: pointer;
 }
 
 

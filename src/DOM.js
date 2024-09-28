@@ -33,9 +33,9 @@ export function renderNav() {
             categoryListOfProjects.appendChild(projectName);
         });
 
-        addNewProjectInput(categoryListOfProjects, categoryIndex)
+        addNewProjectInput(categoryListOfProjects, categoryIndex);
         ulOfProjects.append(categoryName, categoryListOfProjects);
-        
+
     });
 
     const addNewCategoryInput = document.createElement("input");
@@ -62,7 +62,7 @@ export function renderNav() {
                 renderNav();
             };
         };
-    }
+    };
 };
 
 export function renderMain() {
@@ -148,8 +148,6 @@ export function renderMain() {
             const divContainer = document.createElement("button");
             divContainer.textContent = "ADD A NEW TASK";
             divContainer.id = "add-new-task-btn";
-            divContainer.setAttribute("data-project-id", projectIndex);
-            divContainer.setAttribute("data-category-id", categoryIndex);
             tasksContainer.appendChild(divContainer);
             openCloseModal(divContainer, document.querySelector("#add-new-task"))
         };

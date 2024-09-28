@@ -9,18 +9,36 @@ const renderOnClick = (link, categoryIndex, projectIndex) => {
 
 export function renderMainLinksContent() {
     const inboxLink = document.querySelector("#inbox-link");
-    const todayLink = document.querySelector("#today-link");
-    const weekLink = document.querySelector("#week-link");
 
     inboxLink.onclick = function() {
         renderMain().renderProject();
-    }
+    };
 };
 
 export function renderNav() {
 
     const ulOfProjects = document.querySelector(".projects-list");
     ulOfProjects.textContent = "";
+
+    const addNewCategoryInput = document.createElement("input");
+    addNewCategoryInput.setAttribute("placeholder", "Add a new category");
+    const addNewCategoryInputConfirmButton = document.createElement("button");
+    addNewCategoryInputConfirmButton.textContent = "+";
+    const newCategoryForm = document.createElement("form");
+
+    newCategoryForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+    });
+
+    newCategoryForm.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
+    ulOfProjects.append(newCategoryForm);
+
+    addNewCategoryInputConfirmButton.onclick = function() {
+        if (addNewCategoryInput.value.length > 0){
+            taskFactory.newCategory(addNewCategoryInput.value);
+            renderNav();
+        };
+    };
 
     taskFactory.categoryList.forEach((category, categoryIndex) => {
         const categoryName = document.createElement("li");
@@ -48,25 +66,7 @@ export function renderNav() {
 
     });
 
-    const addNewCategoryInput = document.createElement("input");
-    addNewCategoryInput.setAttribute("placeholder", "Add a new category");
-    const addNewCategoryInputConfirmButton = document.createElement("button");
-    addNewCategoryInputConfirmButton.textContent = "+";
-    const newCategoryForm = document.createElement("form");
 
-    newCategoryForm.addEventListener("submit", function(event) {
-        event.preventDefault();
-    });
-
-    newCategoryForm.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
-    ulOfProjects.append(newCategoryForm);
-
-    addNewCategoryInputConfirmButton.onclick = function() {
-        if (addNewCategoryInput.value.length > 0){
-            taskFactory.newCategory(addNewCategoryInput.value);
-            renderNav();
-        };
-    };
 
     function addNewProjectInput(projectList, categoryId) { 
         const addNewProjectInput = document.createElement("input");

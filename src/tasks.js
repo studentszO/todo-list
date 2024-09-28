@@ -4,8 +4,13 @@ export const taskFactory = (function () {
         const taskCompleted = false;
         const id = taskId;
         taskId++;
-        assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, 
-                              categoryList[categoryIndex].categoryProjects[projectIndex] || defaultProject);
+        if (categoryIndex === undefined) {
+            inboxTasks.push({ name, desc, dueDate, priority, taskCompleted, id })
+        }
+        else {
+            assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, 
+                              categoryList[categoryIndex].categoryProjects[projectIndex]);
+        }
         return { name, desc, dueDate, priority, taskCompleted, id };
     }
 
@@ -33,13 +38,22 @@ export const taskFactory = (function () {
         return category.categoryProjects.push(project);
     }
 
-    function removeTask(categoryIndex, projectIndex, taskIndex) {
-        console.log(categoryIndex, projectIndex, taskIndex)
-        categoryList[categoryIndex].categoryProjects[projectIndex].projectTasks.splice(taskIndex, 1)
+    function removeTask(arrayOfIndexes) {
+        console.log(arrayOfIndexes)
+        if (arrayOfIndexes.length === 1)
+            inboxTasks.splice(arrayOfIndexes[0], 1)
+        else
+            categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks.splice(arrayOfIndexes[2], 1)
     }
 
     function editTask(taskName, taskDesc, taskDueDate, taskPriority, arrayOfIndexes) {
-        const task = categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks[arrayOfIndexes[2]];
+        console.log(arrayOfIndexes)
+        let task;
+        if (arrayOfIndexes.length === 1)
+            task = inboxTasks[arrayOfIndexes[0]]
+        else
+            task = categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks[arrayOfIndexes[2]];
+
         task.name = taskName;
         task.desc = taskDesc;
         task.dueDate = taskDueDate;
@@ -58,9 +72,10 @@ export const taskFactory = (function () {
     let taskId = 0;
     let categoryId = 0;
 
+    const inboxTasks = [];
     const categoryList = [];
     const defaultCategory = newCategory("My First Category");
     const defaultProject = newProject("My First project");
 
-    return { newTask, newProject, assignTaskToProject, removeTask, newCategory, categoryList, editTask, removeCategory, removeProject }
+    return { newTask, newProject, assignTaskToProject, removeTask, newCategory, categoryList, inboxTasks, editTask, removeCategory, removeProject }
 })();

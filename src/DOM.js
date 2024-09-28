@@ -50,9 +50,17 @@ export function renderNav() {
 
     const addNewCategoryInput = document.createElement("input");
     addNewCategoryInput.setAttribute("placeholder", "Add a new category");
-    const addNewCategoryInputConfirmButton = document.createElement("div");
+    const addNewCategoryInputConfirmButton = document.createElement("button");
     addNewCategoryInputConfirmButton.textContent = "+";
-    ulOfProjects.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
+    const newCategoryForm = document.createElement("form");
+
+    newCategoryForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+    });
+
+    newCategoryForm.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
+    ulOfProjects.append(newCategoryForm);
+
     addNewCategoryInputConfirmButton.onclick = function() {
         if (addNewCategoryInput.value.length > 0){
             taskFactory.newCategory(addNewCategoryInput.value);
@@ -63,9 +71,17 @@ export function renderNav() {
     function addNewProjectInput(projectList, categoryId) { 
         const addNewProjectInput = document.createElement("input");
         addNewProjectInput.setAttribute("placeholder", "Add a new project");
-        const addNewProjectInputConfirmButton = document.createElement("div");
+        const addNewProjectInputConfirmButton = document.createElement("button");
+        const newProjectForm = document.createElement("form");
         addNewProjectInputConfirmButton.textContent = "+";
-        projectList.append(addNewProjectInput, addNewProjectInputConfirmButton);
+
+        newProjectForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+        });
+
+        newProjectForm.append(addNewProjectInput, addNewProjectInputConfirmButton);
+        projectList.append(newProjectForm);
+
         addNewProjectInputConfirmButton.onclick = function() {
             if (addNewProjectInput.value.length > 0){
                 taskFactory.newProject(addNewProjectInput.value, categoryId);

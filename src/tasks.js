@@ -4,8 +4,6 @@ export const taskFactory = (function () {
         const taskCompleted = false;
         const id = taskId;
         taskId++;
-        // const categoryIndex = categoryList.findIndex((category) => category.id === Number(categoryId));
-        // const projectIndex = categoryList[categoryIndex].categoryProjects.findIndex((project) => project.id === Number(projectId));
         assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, 
                               categoryList[categoryIndex].categoryProjects[projectIndex] || defaultProject);
         return { name, desc, dueDate, priority, taskCompleted, id };
@@ -37,12 +35,10 @@ export const taskFactory = (function () {
 
     function removeTask(categoryIndex, projectIndex, taskIndex) {
         console.log(categoryIndex, projectIndex, taskIndex)
-        // projectList.forEach((project) => project.projectTasks.forEach((task, index) => task.id === taskId ? project.projectTasks.splice(index, 1): false))
         categoryList[categoryIndex].categoryProjects[projectIndex].projectTasks.splice(taskIndex, 1)
     }
 
     function editTask(taskName, taskDesc, taskDueDate, taskPriority, arrayOfIndexes) {
-        //TODO --------- projectList.forEach((project) => project.projectTasks.forEach((task, index) => task.id === taskId ? (task.name = taskName) && (task.desc = taskDesc) && (task.dueDate = taskDueDate) && (task.priority = taskPriority) : false))
         const task = categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks[arrayOfIndexes[2]];
         task.name = taskName;
         task.desc = taskDesc;
@@ -51,12 +47,10 @@ export const taskFactory = (function () {
     }
 
     function removeCategory(categoryIndex) {
-        // const index = categoryList.findIndex(category => category.id === Number(categoryId));
         categoryList.splice(categoryIndex, 1);
     }
 
     function removeProject(categoryIndex, projectIndex) {
-        // const index = projectList.findIndex(project => project.id === Number(projectId));
         categoryList[categoryIndex].categoryProjects.splice(projectIndex, 1);
     }
 

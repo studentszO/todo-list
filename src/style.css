@@ -48,6 +48,32 @@ body {
     padding: 15px;
 }
 
+.sidebar input, .sidebar input + button {
+    background-color: var(--clr-main);
+    border-radius: 4px;
+    color: var(--clr-submain);
+    font-weight: 600;
+    font-size: 0.8rem;
+    outline: none;
+    border: none;
+    margin: 5px 0 0 22px;
+    padding: 5px;
+}
+
+.sidebar input:hover, .sidebar input:focus {
+    box-shadow: rgba(43, 43, 43, 0.164) 3px 3px 6px 0px inset, rgba(43, 43, 43, 0.164) -3px -3px 6px 1px inset;
+}
+
+.sidebar input + button {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.sidebar input::placeholder {
+    color: var(--clr-navbar);
+    opacity: 0.7;
+}
+
 h1 {
     padding-bottom: 10px;
     margin-bottom: 20px;
@@ -60,29 +86,79 @@ h1 {
     width: 80%;
     border-radius: 4px;
     padding: 5px;
-    margin: 5px 0px 5px 20px;
+    margin: 5px 0px 5px 5px;
     font-weight: 900;
+    font-size: .9rem;
     color: var(--clr-submain);
     text-transform: uppercase;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .projects-list > li > img {
     width: 22px;
     display: flex;
+    cursor: pointer;
 }
 
 .projects-list > li + ul > li {
     color: var(--clr-navbar);
     font-weight: 700;
     letter-spacing: 1px;
-    padding-left: 45px;
+    padding-left: 25px;
+    font-size: .9rem;
+    cursor: pointer;
+    width: max-content;
 }
 
 .projects-list > li + ul {
     margin-bottom: 20px;
 }
+
+.projects-list > form {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 15px auto;
+    padding: 15px 0;
+    border-top: 1px solid var(--clr-main);
+    border-bottom: 1px solid var(--clr-main);
+}
+.projects-list > form > input {
+    padding: 12px 5px;
+    width: 85%;
+    margin: 0;
+}
+.projects-list > form > button {
+    padding: 12px;
+    margin: 0;
+}
+
+#inbox-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 5px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--clr-submain);
+    cursor: pointer;
+    width: max-content;
+}
+
+#inbox-link svg {
+    height: 1.5rem;
+    fill: var(--clr-submain);
+}
+
+#inbox-link:hover, .projects-list > ul > li:hover {
+    color: var(--clr-sub);
+    > svg {
+        fill: var(--clr-sub);
+    }
+}
+
 
 /* MAIN SECTION */
 
@@ -156,7 +232,7 @@ h1 {
     cursor: alias;
 }
 
-.edit-task, .remove-task {
+.edit-task, .remove-task, #add-new-task-btn {
     width: fit-content;
     height: fit-content;
     align-self: center;
@@ -235,6 +311,11 @@ h1 {
 
 .card > h3 {
     color: var(--clr-submain)
+}
+
+#add-new-task-btn {
+    padding: 10px 23px;
+    font-size: .85rem;
 }
 
 dialog {

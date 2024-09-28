@@ -7,6 +7,16 @@ const renderOnClick = (link, categoryIndex, projectIndex) => {
     };
 };
 
+export function renderMainLinksContent() {
+    const inboxLink = document.querySelector("#inbox-link");
+    const todayLink = document.querySelector("#today-link");
+    const weekLink = document.querySelector("#week-link");
+
+    inboxLink.onclick = function() {
+        renderMain().renderProject();
+    }
+};
+
 export function renderNav() {
 
     const ulOfProjects = document.querySelector(".projects-list");
@@ -72,21 +82,28 @@ export function renderMain() {
     const renderProject = (categoryIndex, projectIndex) => {
 
         mainContainer.textContent = "";
-
-        const listOfProjects = taskFactory.categoryList[categoryIndex].categoryProjects;
+        
         const title = document.createElement("h2");
         const deleteIcon = document.createElement("img");
         deleteIcon.src = deleteIconSVG;
         const tasksContainer = document.createElement("div");
-        const projectTasks = listOfProjects[projectIndex].projectTasks;
-        title.textContent = listOfProjects[projectIndex].name;
-        title.append(deleteIcon);
-        deleteIcon.onclick = () => { taskFactory.removeProject(categoryIndex, projectIndex) | renderNav() | renderMain().renderProject(0, 0) };
+
+        let tasksArray;
+        if (categoryIndex !== undefined) {
+            tasksArray = taskFactory.categoryList[categoryIndex].categoryProjects[projectIndex].projectTasks;
+            title.textContent = taskFactory.categoryList[categoryIndex].categoryProjects[projectIndex].name;
+            title.append(deleteIcon);
+            deleteIcon.onclick = () => { taskFactory.removeProject(categoryIndex, projectIndex) | renderNav() | renderMain().renderProject() };
+        }
+        else {
+            tasksArray = taskFactory.inboxTasks;
+            title.textContent = "INBOX";
+        }
         mainContainer.append(title, tasksContainer);
 
         function renderTasks() {
             tasksContainer.textContent = "";
-            projectTasks.forEach((task, taskIndex) => {
+            tasksArray.forEach((task, taskIndex) => {
                 const taskCard = document.createElement("div");
                 const taskName = document.createElement("h3");
                 const taskDesc = document.createElement("p");
@@ -116,18 +133,23 @@ export function renderMain() {
                     const currentHeight = window.getComputedStyle(taskCard).height;
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
-
-                openCloseModal(editTaskButton, document.querySelector("#edit-task"), [categoryIndex, projectIndex, taskIndex]);
+                if (tasksArray === taskFactory.inboxTasks)
+                    openCloseModal(editTaskButton, document.querySelector("#edit-task"), [taskIndex]);
+                else
+                    openCloseModal(editTaskButton, document.querySelector("#edit-task"), [categoryIndex, projectIndex, taskIndex]);
 
                 removeTaskButton.onclick = function () {
-                    taskFactory.removeTask(categoryIndex, projectIndex, taskIndex);
+                    if (tasksArray === taskFactory.inboxTasks)
+                        taskFactory.removeTask([taskIndex]);
+                    else
+                        taskFactory.removeTask([categoryIndex, projectIndex, taskIndex]);
                     document.querySelector("#card" + task.id).remove();
                 };
             });
         };
 
-        function renderEverything() {
-            renderTasks();
+        function renderEverything(arg) {
+            renderTasks(arg);
             renderNewTaskButton();
         };
 
@@ -149,7 +171,7 @@ export function renderMain() {
             divContainer.textContent = "ADD A NEW TASK";
             divContainer.id = "add-new-task-btn";
             tasksContainer.appendChild(divContainer);
-            openCloseModal(divContainer, document.querySelector("#add-new-task"))
+            openCloseModal(divContainer, document.querySelector("#add-new-task"));
         };
 
 
@@ -185,16 +207,26 @@ function EditTaskModalValues(arrayOfIndexes) {
     const taskDueDateInput = document.querySelector("#edit-task-due-date");
     const taskPriority = document.querySelector("#edit-task-priority");
     const confirmButton = document.querySelector("#edit-task-confirm-btn");
-    const tasksArray = taskFactory.categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks
+    
+    let tasksArray;
+    if (arrayOfIndexes.length === 1)
+        tasksArray = taskFactory.inboxTasks;
+    else
+        tasksArray = taskFactory.categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks;
 
-    taskNameInput.value = tasksArray[arrayOfIndexes[2]].name;
-    taskDescInput.value = tasksArray[arrayOfIndexes[2]].desc;
-    taskDueDateInput.value = tasksArray[arrayOfIndexes[2]].dueDate;
-    taskPriority.value = tasksArray[arrayOfIndexes[2]].priority;
+    const taskIndex = arrayOfIndexes.length === 1 ? arrayOfIndexes[0] : arrayOfIndexes[2];
+
+    taskNameInput.value = tasksArray[taskIndex].name;
+    taskDescInput.value = tasksArray[taskIndex].desc;
+    taskDueDateInput.value = tasksArray[taskIndex].dueDate;
+    taskPriority.value = tasksArray[taskIndex].priority;
 
     confirmButton.onclick = function() {
-        taskFactory.editTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, arrayOfIndexes)
-        renderMain().renderProject(arrayOfIndexes[0], arrayOfIndexes[1]);
+        taskFactory.editTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, arrayOfIndexes);
+        if (arrayOfIndexes.length === 1)
+            renderMain().renderProject();
+        else
+            renderMain().renderProject(arrayOfIndexes[0], arrayOfIndexes[1]);
         EditTaskModal.close();
     };
 };

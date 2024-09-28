@@ -7,6 +7,12 @@ const renderOnClick = (link, categoryIndex, projectIndex) => {
     };
 };
 
+export function setTodaysDateMinOnInput() {
+    const today = new Date().toISOString().split('T')[0];
+    const taskDueDateInputs = document.querySelectorAll("input[type='date']");
+    taskDueDateInputs.forEach((task) => task.setAttribute('min', today));
+}
+
 export function renderMainLinksContent() {
     const inboxLink = document.querySelector("#inbox-link");
 
@@ -210,9 +216,6 @@ function getAddNewTaskModalValues(categoryIndex, projectIndex) {
     const taskDueDateInput = document.querySelector("#task-due-date");
     const taskPriority = document.querySelector("#task-priority");
 
-    const today = new Date().toISOString().split('T')[0];
-    taskDueDateInput.setAttribute('min', today);
-
     taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, categoryIndex, projectIndex);
     form.reset();
     renderMain().renderProject(categoryIndex, projectIndex);
@@ -226,9 +229,6 @@ function EditTaskModalValues(arrayOfIndexes) {
     const taskDueDateInput = document.querySelector("#edit-task-due-date");
     const taskPriority = document.querySelector("#edit-task-priority");
     const confirmButton = document.querySelector("#edit-task-confirm-btn");
-    
-    const today = new Date().toISOString().split('T')[0];
-    taskDueDateInput.setAttribute('min', today);
 
     let tasksArray;
     if (arrayOfIndexes.length === 1)

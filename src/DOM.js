@@ -1,9 +1,9 @@
 import { taskFactory } from "./tasks";
 import deleteIconSVG from "./icons/delete-circle.svg";
 
-const renderOnClick = (link) => {
+const renderOnClick = (link, categoryIndex, projectIndex) => {
     link.onclick = function() {
-      renderMain().renderProject(link.getAttribute("data-id"));
+        renderMain().renderProject(categoryIndex, projectIndex);
     };
 };
 
@@ -12,29 +12,30 @@ export function renderNav() {
     const ulOfProjects = document.querySelector(".projects-list");
     ulOfProjects.textContent = "";
 
-    taskFactory.categoryList.forEach((e) => {
+    taskFactory.categoryList.forEach((category, categoryIndex) => {
         const categoryName = document.createElement("li");
-        categoryName.textContent = e.name;
+        categoryName.textContent = category.name;
         const deleteIcon = document.createElement("img");
         deleteIcon.src = deleteIconSVG;
 
         deleteIcon.onclick = function() {
-            taskFactory.removeCategory(e.id);
+            taskFactory.removeCategory(categoryIndex);
             renderNav();
         };
 
         categoryName.append(deleteIcon);
         const categoryListOfProjects = document.createElement("ul");
 
-        e.categoryProjects.forEach((project) => {
+        category.categoryProjects.forEach((project, projectIndex) => {
             const projectName = document.createElement("li");
-            renderOnClick(projectName);
-            projectName.setAttribute("data-id", project.id);
+            renderOnClick(projectName, categoryIndex, projectIndex);
             projectName.textContent = project.name;
             categoryListOfProjects.appendChild(projectName);
         });
-        addNewProject(categoryListOfProjects, e.id)
+
+        addNewProjectInput(categoryListOfProjects, categoryIndex)
         ulOfProjects.append(categoryName, categoryListOfProjects);
+        
     });
 
     const addNewCategoryInput = document.createElement("input");
@@ -49,7 +50,7 @@ export function renderNav() {
         };
     };
 
-    function addNewProject(projectList, categoryId) { 
+    function addNewProjectInput(projectList, categoryId) { 
         const addNewProjectInput = document.createElement("input");
         addNewProjectInput.setAttribute("placeholder", "Add a new project");
         const addNewProjectInputConfirmButton = document.createElement("div");
@@ -68,22 +69,24 @@ export function renderMain() {
     
     const mainContainer = document.querySelector(".main");
 
-    const renderProject = (projectId) => {
+    const renderProject = (categoryIndex, projectIndex) => {
+
         mainContainer.textContent = "";
-        const listOfProjects = taskFactory.projectList;
+
+        const listOfProjects = taskFactory.categoryList[categoryIndex].categoryProjects;
         const title = document.createElement("h2");
         const deleteIcon = document.createElement("img");
         deleteIcon.src = deleteIconSVG;
         const tasksContainer = document.createElement("div");
-        const projectTasks = listOfProjects[projectId].projectTasks;
-
-        title.textContent = listOfProjects[projectId].name;
+        const projectTasks = listOfProjects[projectIndex].projectTasks;
+        title.textContent = listOfProjects[projectIndex].name;
         title.append(deleteIcon);
+        deleteIcon.onclick = () => { taskFactory.removeProject(categoryIndex, projectIndex) | renderNav() | renderMain().renderProject(0, 0) };
         mainContainer.append(title, tasksContainer);
 
         function renderTasks() {
             tasksContainer.textContent = "";
-            projectTasks.forEach((task) => {
+            projectTasks.forEach((task, taskIndex) => {
                 const taskCard = document.createElement("div");
                 const taskName = document.createElement("h3");
                 const taskDesc = document.createElement("p");
@@ -114,10 +117,10 @@ export function renderMain() {
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
 
-                openCloseModal(editTaskButton, document.querySelector("#edit-task"), task.id);
+                openCloseModal(editTaskButton, document.querySelector("#edit-task"), [categoryIndex, projectIndex, taskIndex]);
 
                 removeTaskButton.onclick = function () {
-                    taskFactory.removeTask(task.id);
+                    taskFactory.removeTask(categoryIndex, projectIndex, taskIndex);
                     document.querySelector("#card" + task.id).remove();
                 };
             });
@@ -145,7 +148,8 @@ export function renderMain() {
             const divContainer = document.createElement("button");
             divContainer.textContent = "ADD A NEW TASK";
             divContainer.id = "add-new-task-btn";
-            divContainer.setAttribute("data-project-id", projectId);
+            divContainer.setAttribute("data-project-id", projectIndex);
+            divContainer.setAttribute("data-category-id", categoryIndex);
             tasksContainer.appendChild(divContainer);
             openCloseModal(divContainer, document.querySelector("#add-new-task"))
         };
@@ -153,65 +157,56 @@ export function renderMain() {
 
         const confirmButton = document.querySelector("#add-task-confirm-btn");
         confirmButton.onclick = function(){
-            getAddNewTaskModalValues();
+            getAddNewTaskModalValues(categoryIndex, projectIndex);
             renderEverything();
         };
 
         renderEverything();
     };
 
-    return { renderProject }
+    return { renderProject };
 };
 
-function getAddNewTaskModalValues() {
-    const addNewTaskButton = document.querySelector("#add-new-task-btn");
+function getAddNewTaskModalValues(categoryIndex, projectIndex) {
     const form = document.querySelector("#add-new-task-form");
-
-    const projectIdValue = addNewTaskButton.getAttribute("data-project-id");
     const taskNameInput = document.querySelector("#task-name");
     const taskDescInput = document.querySelector("#task-desc");
     const taskDueDateInput = document.querySelector("#task-due-date");
     const taskPriority = document.querySelector("#task-priority");
 
-    taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, projectIdValue);
+    taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, categoryIndex, projectIndex);
     form.reset();
-    renderMain().renderProject(projectIdValue);
+    renderMain().renderProject(categoryIndex, projectIndex);
 };
 
-function EditTaskModalValues(taskId) {
+function EditTaskModalValues(arrayOfIndexes) {
 
-    const addNewTaskButton = document.querySelector("#add-new-task-btn");
-    const projectIdValue = addNewTaskButton.getAttribute("data-project-id");
     const EditTaskModal = document.querySelector("#edit-task");
-
     const taskNameInput = document.querySelector("#edit-task-name");
     const taskDescInput = document.querySelector("#edit-task-desc");
     const taskDueDateInput = document.querySelector("#edit-task-due-date");
     const taskPriority = document.querySelector("#edit-task-priority");
-    
-    const arrayOfTasks = taskFactory.projectList[projectIdValue].projectTasks;
-    const taskIndex = arrayOfTasks.findIndex(task => task.id === taskId);
-
-    taskNameInput.value = arrayOfTasks[taskIndex].name;
-    taskDescInput.value = arrayOfTasks[taskIndex].desc;
-    taskDueDateInput.value = arrayOfTasks[taskIndex].dueDate;
-    taskPriority.value = arrayOfTasks[taskIndex].priority;
-
     const confirmButton = document.querySelector("#edit-task-confirm-btn");
+    const tasksArray = taskFactory.categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks
+
+    taskNameInput.value = tasksArray[arrayOfIndexes[2]].name;
+    taskDescInput.value = tasksArray[arrayOfIndexes[2]].desc;
+    taskDueDateInput.value = tasksArray[arrayOfIndexes[2]].dueDate;
+    taskPriority.value = tasksArray[arrayOfIndexes[2]].priority;
 
     confirmButton.onclick = function() {
-        taskFactory.editTask(taskId, taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value)
-        renderMain().renderProject(projectIdValue);
+        taskFactory.editTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, arrayOfIndexes)
+        renderMain().renderProject(arrayOfIndexes[0], arrayOfIndexes[1]);
         EditTaskModal.close();
     };
 };
 
-function openCloseModal(triggerButton, modalElement, taskIdToShowValuesToEdit) {
+function openCloseModal(triggerButton, modalElement, arrayOfIndexes) {
     const cancelButton = modalElement.querySelector(".cancel-btn");
 
     triggerButton.onclick = () => {
         modalElement.showModal();
-        taskIdToShowValuesToEdit === undefined ? false : EditTaskModalValues(taskIdToShowValuesToEdit);
+        arrayOfIndexes === undefined ? false : EditTaskModalValues(arrayOfIndexes);
     };
     
     window.addEventListener("click", (e) => {

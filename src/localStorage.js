@@ -12,8 +12,8 @@ export function loadOBjectFromLocalStorage() {
     if (storageAvailable("localStorage")) {
         if (localStorage.length > 0) {
             const categoriesList = JSON.parse(localStorage.getItem("categories"));
-            const inboxList = JSON.parse(localStorage.getItem("inbox"))
-            return [categoriesList, inboxList]
+            const inboxList = JSON.parse(localStorage.getItem("inbox"));
+            return [categoriesList, inboxList];
           } 
         else {
             return false;

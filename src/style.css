@@ -218,6 +218,7 @@ h1 {
 .card > p {
     padding: 5px;
     font-size: 0.90rem;
+    color: var(--clr-submain);
     &::before {
         content: "DESCRIPTION: ";
         color: #ffffff71;

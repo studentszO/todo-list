@@ -33,18 +33,16 @@ export function renderNav() {
     const newCategoryForm = document.createElement("form");
 
     newCategoryForm.addEventListener("submit", function(event) {
-        event.preventDefault();
+        if (addNewCategoryInput.value.length > 0){
+            event.preventDefault();
+            taskFactory.newCategory(addNewCategoryInput.value);
+            console.log(taskFactory.categoryList)
+            renderNav();
+        };
     });
 
     newCategoryForm.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
     ulOfProjects.append(newCategoryForm);
-
-    addNewCategoryInputConfirmButton.onclick = function() {
-        if (addNewCategoryInput.value.length > 0){
-            taskFactory.newCategory(addNewCategoryInput.value);
-            renderNav();
-        };
-    };
 
     taskFactory.categoryList.forEach((category, categoryIndex) => {
         const categoryName = document.createElement("li");
@@ -82,19 +80,19 @@ export function renderNav() {
         addNewProjectInputConfirmButton.textContent = "+";
 
         newProjectForm.addEventListener("submit", function(event) {
-            event.preventDefault();
+            if (addNewProjectInput.value.length > 0){
+                event.preventDefault();
+                taskFactory.newProject(addNewProjectInput.value, categoryId);
+                console.log(taskFactory.categoryList)
+                renderNav();
+            };
         });
 
         newProjectForm.append(addNewProjectInput, addNewProjectInputConfirmButton);
         projectList.append(newProjectForm);
 
-        addNewProjectInputConfirmButton.onclick = function() {
-            if (addNewProjectInput.value.length > 0){
-                taskFactory.newProject(addNewProjectInput.value, categoryId);
-                renderNav();
-            };
-        };
     };
+
 };
 
 export function renderMain() {

@@ -88,7 +88,7 @@ export const taskFactory = (function () {
 
     if (loadStorage === false) {
         const today = new Date().toISOString().split('T')[0];
-        const myFirstTask = taskFactory.newTask("My First Task", 'Lorem ipsum odor amet, consectetuer adipiscing elit. Hac ullamcorper nostra proin laoreet massa. Porta aenean penatibus varius bibendum accumsan adipiscing cubilia diam hac.', today, "2", 0, 0);
+        const myFirstTask = newTask("My First Task", 'Lorem ipsum odor amet, consectetuer adipiscing elit. Hac ullamcorper nostra proin laoreet massa. Porta aenean penatibus varius bibendum accumsan adipiscing cubilia diam hac.', today, "2", 0, 0);
         const defaultCategory = newCategory("My First Category");
         const defaultProject = newProject("My First project");
     }

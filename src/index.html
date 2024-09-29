@@ -22,20 +22,20 @@
     <dialog id="add-new-task">
         <form id="add-new-task-form">
             <div>
-                <label for="task-name">Task Name:</label>
-                <input type="text" name="task-name" id="task-name" required>
+                <label for="task-name">Task Name<span> *</span></label>
+                <input type="text" name="task-name" id="task-name" minlength="2">
             </div>
             <div>
-                <label for="task-desc">Description:</label>
+                <label for="task-desc">Description</label>
                 <textarea name="task-desc" id="task-desc" rows="5" cols="33"></textarea>
             </div>
             <div>
-                <label for="task-due-date">Due Date:</label>
-                <input type="date" name="task-due-date" id="task-due-date" required>
+                <label for="task-due-date">Due Date<span> *</span></label>
+                <input type="date" name="task-due-date" id="task-due-date">
             </div>
             <div>
-                <label for="task-priority">Priority:</label>
-                <select name="task-priority" id="task-priority" required>
+                <label for="task-priority">Priority<span> *</span></label>
+                <select name="task-priority" id="task-priority">
                     <option value="">-> Choose a Priority <-</option>
                     <option value="4">LOW</option>
                     <option value="3">MEDIUM</option>
@@ -52,19 +52,20 @@
     <dialog id="edit-task">
         <form id="edit-task-form">
             <div>
-                <label for="edit-task-name">Task Name:</label>
-                <input type="text" name="edit-task-name" id="edit-task-name" required>
+                <label for="edit-task-name">Task Name<span> *</span></label>
+                <input type="text" name="edit-task-name" id="edit-task-name" required minlength="2">
+
             </div>
             <div>
-                <label for="edit-task-desc">Description:</label>
+                <label for="edit-task-desc">Description</label>
                 <textarea name="edit-task-desc" id="edit-task-desc" rows="5" cols="33"></textarea>
             </div>
             <div>
-                <label for="edit-task-due-date">Due Date:</label>
+                <label for="edit-task-due-date">Due Date<span> *</span></label>
                 <input type="date" name="edit-task-due-date" id="edit-task-due-date" required>
             </div>
             <div>
-                <label for="edit-task-priority">Priority:</label>
+                <label for="edit-task-priority">Priority<span> *</span></label>
                 <select name="edit-task-priority" id="edit-task-priority" required>
                     <option value="" disabled>-> Choose a Priority <-</option>
                     <option value="4">LOW</option>

@@ -155,6 +155,7 @@ export function renderMain() {
                     const currentHeight = window.getComputedStyle(taskCard).height;
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
+
                 if (tasksArray === taskFactory.inboxTasks)
                     openCloseModal(editTaskButton, document.querySelector("#edit-task"), [taskIndex]);
                 else
@@ -198,7 +199,7 @@ export function renderMain() {
 
 
         const confirmButton = document.querySelector("#add-task-confirm-btn");
-        confirmButton.onclick = function(){
+        confirmButton.onclick = function() {
             getAddNewTaskModalValues(categoryIndex, projectIndex);
             renderEverything();
         };
@@ -216,9 +217,16 @@ function getAddNewTaskModalValues(categoryIndex, projectIndex) {
     const taskDueDateInput = document.querySelector("#task-due-date");
     const taskPriority = document.querySelector("#task-priority");
 
-    taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, categoryIndex, projectIndex);
-    form.reset();
-    renderMain().renderProject(categoryIndex, projectIndex);
+    if (
+        taskNameInput.value.length > 0
+        && taskDueDateInput.value.length > 0
+        && taskPriority.value.length > 0
+    ) {
+        taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, categoryIndex, projectIndex);
+        form.reset();
+        document.querySelector("#add-new-task").close();
+        renderMain().renderProject(categoryIndex, projectIndex);
+    }
 };
 
 function EditTaskModalValues(arrayOfIndexes) {

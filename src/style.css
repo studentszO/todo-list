@@ -371,3 +371,9 @@ dialog > form > div:last-of-type {
     justify-content: center;
     gap: 15px;
 }
+
+dialog label > span {
+    color: red;
+    font-weight: 100;
+    font-size: .8rem;
+}

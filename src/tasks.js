@@ -4,7 +4,6 @@ import { saveObjectToLocalStorage } from "./localStorage";
 export const taskFactory = (function () {
 
     function newTask(name, desc, dueDate, priority, categoryIndex, projectIndex) {
-        const taskCompleted = false;
         const id = taskId;
         taskId++;
         if (categoryIndex === undefined) {
@@ -15,7 +14,7 @@ export const taskFactory = (function () {
                               categoryList[categoryIndex].categoryProjects[projectIndex]);
         }
         saveObjectToLocalStorage();
-        return { name, desc, dueDate, priority, taskCompleted, id };
+        return { name, desc, dueDate, priority, id };
     };
 
     function newProject(name, categoryIndex) {

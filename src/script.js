@@ -1,5 +1,10 @@
 import "./style.css";
-import { renderMain, renderNav, renderMainLinksContent, setTodaysDateMinOnInput } from "./DOM.js";
+import {
+  renderMain,
+  renderNav,
+  renderMainLinksContent,
+  setTodaysDateMinOnInput,
+} from "./DOM";
 
 renderNav();
 renderMain().renderProject();

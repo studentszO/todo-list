@@ -1,84 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do list by szO</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="sidebar">
-        <h1>&lt; szO's to-do app &gt;</h1>
-        <nav class="main-links-nav">
-                <div id="inbox-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,15H15A3,3 0 0,1 12,18A3,3 0 0,1 9,15H5V5H19M19,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"/></svg>Inbox</div>
-        </nav>
-        <nav class="projects-nav">
-            <ul class="projects-list">
-            </ul>
-        </nav>
+      <h1>&lt; szO's to-do app &gt;</h1>
+      <nav class="main-links-nav">
+        <div id="inbox-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M19,15H15A3,3 0 0,1 12,18A3,3 0 0,1 9,15H5V5H19M19,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"
+            /></svg
+          >Inbox
+        </div>
+      </nav>
+      <nav class="projects-nav">
+        <ul class="projects-list"></ul>
+      </nav>
     </div>
-    <div class="main">
-
-    </div>
+    <div class="main"></div>
     <dialog id="add-new-task">
-        <form id="add-new-task-form">
-            <div>
-                <label for="task-name">Task Name<span> *</span></label>
-                <input type="text" name="task-name" id="task-name" minlength="2">
-            </div>
-            <div>
-                <label for="task-desc">Description</label>
-                <textarea name="task-desc" id="task-desc" rows="5" cols="33"></textarea>
-            </div>
-            <div>
-                <label for="task-due-date">Due Date<span> *</span></label>
-                <input type="date" name="task-due-date" id="task-due-date">
-            </div>
-            <div>
-                <label for="task-priority">Priority<span> *</span></label>
-                <select name="task-priority" id="task-priority">
-                    <option value="">-&gt; Choose a Priority &lt;-</option>
-                    <option value="4">LOW</option>
-                    <option value="3">MEDIUM</option>
-                    <option value="2">HIGH</option>
-                    <option value="1">URGENT</option>
-                </select>
-            </div>
-            <div>
-                <button id="add-task-confirm-btn" type="button">ADD THIS TASK</button>
-                <button class="cancel-btn" type="button">CANCEL</button>
-            </div>
-        </form>
+      <form id="add-new-task-form">
+        <div>
+          <label for="task-name">Task Name<span> *</span></label>
+          <input type="text" name="task-name" id="task-name" minlength="2" />
+        </div>
+        <div>
+          <label for="task-desc">Description</label>
+          <textarea
+            name="task-desc"
+            id="task-desc"
+            rows="5"
+            cols="33"
+          ></textarea>
+        </div>
+        <div>
+          <label for="task-due-date">Due Date<span> *</span></label>
+          <input type="date" name="task-due-date" id="task-due-date" />
+        </div>
+        <div>
+          <label for="task-priority">Priority<span> *</span></label>
+          <select name="task-priority" id="task-priority">
+            <option value="">-&gt; Choose a Priority &lt;-</option>
+            <option value="4">LOW</option>
+            <option value="3">MEDIUM</option>
+            <option value="2">HIGH</option>
+            <option value="1">URGENT</option>
+          </select>
+        </div>
+        <div>
+          <button id="add-task-confirm-btn" type="button">ADD THIS TASK</button>
+          <button class="cancel-btn" type="button">CANCEL</button>
+        </div>
+      </form>
     </dialog>
     <dialog id="edit-task">
-        <form id="edit-task-form">
-            <div>
-                <label for="edit-task-name">Task Name<span> *</span></label>
-                <input type="text" name="edit-task-name" id="edit-task-name" required minlength="2">
-
-            </div>
-            <div>
-                <label for="edit-task-desc">Description</label>
-                <textarea name="edit-task-desc" id="edit-task-desc" rows="5" cols="33"></textarea>
-            </div>
-            <div>
-                <label for="edit-task-due-date">Due Date<span> *</span></label>
-                <input type="date" name="edit-task-due-date" id="edit-task-due-date" required>
-            </div>
-            <div>
-                <label for="edit-task-priority">Priority<span> *</span></label>
-                <select name="edit-task-priority" id="edit-task-priority" required>
-                    <option value="" disabled>-&gt; Choose a Priority &lt;-</option>
-                    <option value="4">LOW</option>
-                    <option value="3">MEDIUM</option>
-                    <option value="2">HIGH</option>
-                    <option value="1">URGENT</option>
-                </select>
-            </div>
-            <div>
-                <button id="edit-task-confirm-btn" type="button">EDIT</button>
-                <button class="cancel-btn" type="button">CANCEL</button>
-            </div>
-        </form>
+      <form id="edit-task-form">
+        <div>
+          <label for="edit-task-name">Task Name<span> *</span></label>
+          <input
+            type="text"
+            name="edit-task-name"
+            id="edit-task-name"
+            required
+            minlength="2"
+          />
+        </div>
+        <div>
+          <label for="edit-task-desc">Description</label>
+          <textarea
+            name="edit-task-desc"
+            id="edit-task-desc"
+            rows="5"
+            cols="33"
+          ></textarea>
+        </div>
+        <div>
+          <label for="edit-task-due-date">Due Date<span> *</span></label>
+          <input
+            type="date"
+            name="edit-task-due-date"
+            id="edit-task-due-date"
+            required
+          />
+        </div>
+        <div>
+          <label for="edit-task-priority">Priority<span> *</span></label>
+          <select name="edit-task-priority" id="edit-task-priority" required>
+            <option value="" disabled>-&gt; Choose a Priority &lt;-</option>
+            <option value="4">LOW</option>
+            <option value="3">MEDIUM</option>
+            <option value="2">HIGH</option>
+            <option value="1">URGENT</option>
+          </select>
+        </div>
+        <div>
+          <button id="edit-task-confirm-btn" type="button">EDIT</button>
+          <button class="cancel-btn" type="button">CANCEL</button>
+        </div>
+      </form>
     </dialog>
-</body>
+  </body>
 </html>

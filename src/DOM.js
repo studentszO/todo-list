@@ -107,7 +107,7 @@ export function renderMain() {
         const tasksContainer = document.createElement("div");
 
         let tasksArray;
-        
+
         if (categoryIndex !== undefined) {
             tasksArray = toDoList.categoryList[categoryIndex].categoryProjects[projectIndex].projectTasks;
             title.textContent = toDoList.categoryList[categoryIndex].categoryProjects[projectIndex].name;
@@ -197,7 +197,17 @@ export function renderMain() {
 
 
         const confirmButton = document.querySelector("#add-task-confirm-btn");
-        confirmButton.onclick = function() {
+
+        document.querySelector("#add-new-task-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+        })
+        
+        document.querySelector("#edit-task-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+        })
+
+        confirmButton.onclick = function(e) {
+            e.preventDefault();
             getAddNewTaskModalValues(categoryIndex, projectIndex);
             renderEverything();
         };

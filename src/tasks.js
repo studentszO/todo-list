@@ -1,16 +1,19 @@
 import { loadOBjectFromLocalStorage } from "./localStorage";
 import { saveObjectToLocalStorage } from "./localStorage";
 
-export const taskFactory = (function () {
+const loadedStorage = loadOBjectFromLocalStorage();
+
+const toDoFactory = function () {
 
     function newTask(name, desc, dueDate, priority, categoryIndex, projectIndex) {
         const id = taskId;
         taskId++;
         if (categoryIndex === undefined) {
-            inboxTasks.push({ name, desc, dueDate, priority, taskCompleted, id })
+            inboxTasks.push({ name, desc, dueDate, priority, id })
         }
         else {
-            assignTaskToProject({ name, desc, dueDate, priority, taskCompleted, id }, 
+            console.log(categoryList)
+            assignTaskToProject({ name, desc, dueDate, priority, id }, 
                               categoryList[categoryIndex].categoryProjects[projectIndex]);
         }
         saveObjectToLocalStorage();
@@ -21,7 +24,7 @@ export const taskFactory = (function () {
         const projectTasks = [];
         const id = projectId;
         projectId++;
-        assignProjectToCategory({ name, projectTasks, id }, categoryList[categoryIndex] || defaultCategory);
+        assignProjectToCategory({ name, projectTasks, id }, categoryList[categoryIndex]);
         saveObjectToLocalStorage();
         return { name, projectTasks, id };
     };
@@ -81,17 +84,18 @@ export const taskFactory = (function () {
     let taskId = 0;
     let categoryId = 0;
 
-    const loadStorage = loadOBjectFromLocalStorage();
+    const inboxTasks = loadedStorage === false ? [] : loadedStorage[1];
+    const categoryList = loadedStorage === false ? [] : loadedStorage[0];
 
-    const inboxTasks = loadStorage === false ? [] : loadStorage[1];
-    const categoryList = loadStorage === false ? [] : loadStorage[0];
+    return { newTask, newProject, removeTask, newCategory, editTask, removeCategory, removeProject, categoryList, inboxTasks, }
+};
 
-    if (loadStorage === false) {
-        const today = new Date().toISOString().split('T')[0];
-        const myFirstTask = newTask("My First Task", 'Lorem ipsum odor amet, consectetuer adipiscing elit. Hac ullamcorper nostra proin laoreet massa. Porta aenean penatibus varius bibendum accumsan adipiscing cubilia diam hac.', today, "2", 0, 0);
-        const defaultCategory = newCategory("My First Category");
-        const defaultProject = newProject("My First project");
-    }
+const toDoList = toDoFactory();
+export default toDoList;
 
-    return { newTask, newProject, assignTaskToProject, removeTask, newCategory, categoryList, inboxTasks, editTask, removeCategory, removeProject }
-})();
+if (loadedStorage === false) {
+    const today = new Date().toISOString().split('T')[0];
+    toDoList.newCategory("My First Category");
+    toDoList.newProject("My First project", 0);
+    toDoList.newTask("My First Task", 'Lorem ipsum odor amet, consectetuer adipiscing elit. Hac ullamcorper nostra proin laoreet massa. Porta aenean penatibus varius bibendum accumsan adipiscing cubilia diam hac.', today, "2", 0, 0);
+}

@@ -1,4 +1,4 @@
-import { taskFactory } from "./tasks";
+import toDoList from "./tasks";
 import deleteIconSVG from "./icons/delete-circle.svg";
 
 const renderOnClick = (link, categoryIndex, projectIndex) => {
@@ -35,8 +35,7 @@ export function renderNav() {
     newCategoryForm.addEventListener("submit", function(event) {
         if (addNewCategoryInput.value.length > 0){
             event.preventDefault();
-            taskFactory.newCategory(addNewCategoryInput.value);
-            console.log(taskFactory.categoryList)
+            toDoList.newCategory(addNewCategoryInput.value);
             renderNav();
         };
     });
@@ -44,14 +43,14 @@ export function renderNav() {
     newCategoryForm.append(addNewCategoryInput, addNewCategoryInputConfirmButton);
     ulOfProjects.append(newCategoryForm);
 
-    taskFactory.categoryList.forEach((category, categoryIndex) => {
+    toDoList.categoryList.forEach((category, categoryIndex) => {
         const categoryName = document.createElement("li");
         categoryName.textContent = category.name;
         const deleteIcon = document.createElement("img");
         deleteIcon.src = deleteIconSVG;
 
         deleteIcon.onclick = function() {
-            taskFactory.removeCategory(categoryIndex);
+            toDoList.removeCategory(categoryIndex);
             renderNav();
         };
 
@@ -82,8 +81,7 @@ export function renderNav() {
         newProjectForm.addEventListener("submit", function(event) {
             if (addNewProjectInput.value.length > 0){
                 event.preventDefault();
-                taskFactory.newProject(addNewProjectInput.value, categoryId);
-                console.log(taskFactory.categoryList)
+                toDoList.newProject(addNewProjectInput.value, categoryId);
                 renderNav();
             };
         });
@@ -109,16 +107,18 @@ export function renderMain() {
         const tasksContainer = document.createElement("div");
 
         let tasksArray;
+        
         if (categoryIndex !== undefined) {
-            tasksArray = taskFactory.categoryList[categoryIndex].categoryProjects[projectIndex].projectTasks;
-            title.textContent = taskFactory.categoryList[categoryIndex].categoryProjects[projectIndex].name;
+            tasksArray = toDoList.categoryList[categoryIndex].categoryProjects[projectIndex].projectTasks;
+            title.textContent = toDoList.categoryList[categoryIndex].categoryProjects[projectIndex].name;
             title.append(deleteIcon);
-            deleteIcon.onclick = () => { taskFactory.removeProject(categoryIndex, projectIndex) | renderNav() | renderMain().renderProject() };
+            deleteIcon.onclick = () => { toDoList.removeProject(categoryIndex, projectIndex) | renderNav() | renderMain().renderProject() };
         }
         else {
-            tasksArray = taskFactory.inboxTasks;
+            tasksArray = toDoList.inboxTasks;
             title.textContent = "INBOX";
         }
+
         mainContainer.append(title, tasksContainer);
 
         function renderTasks() {
@@ -154,16 +154,16 @@ export function renderMain() {
                     currentHeight === "34px" ? taskCard.style.height = "154px" : taskCard.style.height = "34px";
                 };
 
-                if (tasksArray === taskFactory.inboxTasks)
+                if (tasksArray === toDoList.inboxTasks)
                     openCloseModal(editTaskButton, document.querySelector("#edit-task"), [taskIndex]);
                 else
                     openCloseModal(editTaskButton, document.querySelector("#edit-task"), [categoryIndex, projectIndex, taskIndex]);
 
                 removeTaskButton.onclick = function () {
-                    if (tasksArray === taskFactory.inboxTasks)
-                        taskFactory.removeTask([taskIndex]);
+                    if (tasksArray === toDoList.inboxTasks)
+                        toDoList.removeTask([taskIndex]);
                     else
-                        taskFactory.removeTask([categoryIndex, projectIndex, taskIndex]);
+                        toDoList.removeTask([categoryIndex, projectIndex, taskIndex]);
                     document.querySelector("#card" + task.id).remove();
                 };
             });
@@ -220,7 +220,7 @@ function getAddNewTaskModalValues(categoryIndex, projectIndex) {
         && taskDueDateInput.value.length > 0
         && taskPriority.value.length > 0
     ) {
-        taskFactory.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, categoryIndex, projectIndex);
+        toDoList.newTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, categoryIndex, projectIndex);
         form.reset();
         document.querySelector("#add-new-task").close();
         renderMain().renderProject(categoryIndex, projectIndex);
@@ -238,9 +238,9 @@ function EditTaskModalValues(arrayOfIndexes) {
 
     let tasksArray;
     if (arrayOfIndexes.length === 1)
-        tasksArray = taskFactory.inboxTasks;
+        tasksArray = toDoList.inboxTasks;
     else
-        tasksArray = taskFactory.categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks;
+        tasksArray = toDoList.categoryList[arrayOfIndexes[0]].categoryProjects[arrayOfIndexes[1]].projectTasks;
 
     const taskIndex = arrayOfIndexes.length === 1 ? arrayOfIndexes[0] : arrayOfIndexes[2];
 
@@ -250,7 +250,7 @@ function EditTaskModalValues(arrayOfIndexes) {
     taskPriority.value = tasksArray[taskIndex].priority;
 
     confirmButton.onclick = function() {
-        taskFactory.editTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, arrayOfIndexes);
+        toDoList.editTask(taskNameInput.value, taskDescInput.value, taskDueDateInput.value, taskPriority.value, arrayOfIndexes);
         if (arrayOfIndexes.length === 1)
             renderMain().renderProject();
         else

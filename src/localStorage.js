@@ -1,8 +1,8 @@
-import { taskFactory } from "./tasks";
+import toDoList from "./tasks";
 
 export function saveObjectToLocalStorage() {
-    const setCategoriesListObjectToJSON = JSON.stringify(taskFactory.categoryList);
-    const setInboxTasksListObjectToJSON = JSON.stringify(taskFactory.inboxTasks);
+    const setCategoriesListObjectToJSON = JSON.stringify(toDoList.categoryList);
+    const setInboxTasksListObjectToJSON = JSON.stringify(toDoList.inboxTasks);
 
     localStorage.setItem("inbox", setInboxTasksListObjectToJSON);
     localStorage.setItem("categories", setCategoriesListObjectToJSON);
@@ -10,13 +10,13 @@ export function saveObjectToLocalStorage() {
 
 export function loadOBjectFromLocalStorage() {
     if (storageAvailable("localStorage")) {
-        if (localStorage.length > 0) {
+        if (!localStorage.getItem("categories")) {
+            return false;
+          } 
+        else {
             const categoriesList = JSON.parse(localStorage.getItem("categories"));
             const inboxList = JSON.parse(localStorage.getItem("inbox"));
             return [categoriesList, inboxList];
-          } 
-        else {
-            return false;
           }
     }
 };
